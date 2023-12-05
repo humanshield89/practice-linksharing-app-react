@@ -2,7 +2,23 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      // add dvh (dynamic viewport height) to tailwind
+      // on mobile devices , 100vh does not account for
+      // address bar and any other control bars on the screen
+      // resulting in a scrollable page
+      // 100dvh fixes this issue
+      // we also keep 100vh as fallback for brwsers that do not support 100dvh
+      height: {
+        screen: ["100vh", "100dvh"],
+      },
+      minHeight: {
+        screen: ["100vh", "100dvh"],
+      },
+      maxHeight: {
+        screen: ["100vh", "100dvh"],
+      },
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {
@@ -55,6 +71,12 @@ export default {
               "background-color": "var(--outline-bg)",
               color: "hsla(var(--p))",
               "box-shadow": "none",
+            },
+          },
+          ".input-bordered": {
+            "&:focus": {
+              "box-shadow": "0px 0px 32px 0px rgba(99, 60, 255, 0.25)",
+              outline: "none",
             },
           },
         },

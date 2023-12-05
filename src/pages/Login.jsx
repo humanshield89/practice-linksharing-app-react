@@ -3,15 +3,23 @@ import { Envelope } from "../svgs/Envelope";
 import { PadLock } from "../svgs/PadLock";
 import { CustomInput } from "../components/CustomInput";
 import { AuthLayout } from "../layouts/AuthLayout";
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
+  const navigate = useNavigate();
   return (
     <>
       <AuthLayout
         title={"Login"}
         text="Add your details below to get back into the app"
       >
-        <form className="flex flex-col gap-6">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            navigate("/app/links");
+          }}
+          className="flex flex-col gap-6"
+        >
           <CustomInput
             label={"Email address"}
             icon={<Envelope />}

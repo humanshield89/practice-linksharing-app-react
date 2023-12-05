@@ -3,14 +3,22 @@ import { AuthLayout } from "../layouts/AuthLayout";
 import { Envelope } from "../svgs/Envelope";
 import { Link } from "react-router-dom";
 import { PadLock } from "../svgs/PadLock";
+import { useNavigate } from "react-router-dom";
 
 export function Signup() {
+  const navigate = useNavigate();
   return (
     <AuthLayout
       title={"Create account"}
       text="Let’s get you started sharing your links!"
     >
-      <form className="flex flex-col gap-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          navigate("/app/links");
+        }}
+        className="flex flex-col gap-4"
+      >
         <CustomInput
           label={"Email address"}
           icon={<Envelope />}
