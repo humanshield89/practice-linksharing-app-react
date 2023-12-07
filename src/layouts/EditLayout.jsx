@@ -7,9 +7,14 @@ import { PhonePreview } from "../components/PhonePreview";
 import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { LogoutIcon } from "../svgs/LogoutIcon";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../redux/slices/AuthSlice";
+import { withAuthGuard } from "../hoc/withAuth";
 
 const Header = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
 
   return (
     <header className="p-4 shadow-sm rounded-lg bg-base-200 flex justify-between items-center w-full">
@@ -31,10 +36,21 @@ const Header = () => {
           active={location.pathname === "/app/profile"}
         />
       </div>
-      <Link to="/p" className="btn btn-primary btn-outline">
-        <span className="hidden md:inline">Preview</span>
-        <EyeIcon className="md:hidden" />
-      </Link>
+      <div className="flex gap-1">
+        <Link to="/p" className="btn btn-primary btn-outline">
+          <span className="hidden md:inline">Preview</span>
+          <EyeIcon className="md:hidden" />
+        </Link>
+        <button
+          className="text-primary hover:text-primary-focus p-2 tooltip"
+          data-tip="Logout"
+          onClick={() => {
+            dispatch(setAuth({ user: null, session: null }));
+          }}
+        >
+          <LogoutIcon />
+        </button>
+      </div>
     </header>
   );
 };
@@ -55,4 +71,6 @@ const EditLayout = () => {
   );
 };
 
-export default EditLayout;
+const EditLayoutWithGuard = withAuthGuard(EditLayout);
+
+export default EditLayoutWithGuard;

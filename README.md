@@ -4,8 +4,15 @@ This is the frontend solution for [Link-sharing-app fontend mentor challenge](ht
 
 ## Install dependencies
 
+## Environment variables
+
+copy `.env.example` to `.env` and fill in the values
+
 ```bash
-pnpm install
+# on linux/mac/unix/powershell
+cp .env.example .env
+# on windows cmd
+copy .env.example .env
 ```
 
 ## Run the app

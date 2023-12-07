@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
  * @property {string} placeholder
  * @property {string} label
  * @property {string} type
+ * @property {JSX.IntrinsicElements['input']} inputProps
  */
 
 /**
@@ -14,7 +15,14 @@ import PropTypes from "prop-types";
  * @param {CustomInputProps} props
  * @returns {JSX.Element}
  */
-export const CustomInput = ({ icon, error, placeholder, label, type }) => {
+export const CustomInput = ({
+  icon,
+  error,
+  placeholder,
+  label,
+  type,
+  inputProps,
+}) => {
   return (
     <div className="flex flex-col gap-0">
       {label && <label className="label label-text-alt">{label}</label>}
@@ -24,6 +32,7 @@ export const CustomInput = ({ icon, error, placeholder, label, type }) => {
           className="input input-bordered w-full pl-10"
           type={type || "text"}
           placeholder={placeholder}
+          {...inputProps}
         />
         {error && (
           <div className="absolute right-2 top-4 text-xs text-error">
@@ -41,4 +50,5 @@ CustomInput.propTypes = {
   placeholder: PropTypes.string,
   label: PropTypes.string,
   type: PropTypes.string,
+  inputProps: PropTypes.object,
 };
