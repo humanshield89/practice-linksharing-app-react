@@ -1,9 +1,40 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+/**
+ * @typedef {Object} Link
+ * @property {string} name
+ * @property {string} url
+ * @property {string} error
+ */
+
+/**
+ * @typedef {Object} Profile
+ * @property {string} firstName
+ * @property {string} lastName
+ * @property {string} email
+ * @property {string} profilePicture
+ * @property {Link[]} links
+ */
+
+/**
+ * @typedef {Object} ProfileState
+ * @property {string} firstName
+ * @property {string} lastName
+ * @property {string} email
+ * @property {string} profilePicture
+ * @property {Link[]} links
+ * @property {boolean} isLoading
+ * @property {Profile} originalProfile
+ */
+
+/**
+ * @type {ProfileState}
+ */
 const initialState = {
   firstName: "",
   lastName: "",
   email: "",
+  profilePicture: "",
   links: [],
   isLoading: false,
   originalProfile: {},
@@ -22,17 +53,23 @@ const profileSlice = createSlice({
     setEmail: (state, action) => {
       state.email = action.payload;
     },
+    setProfilePicture: (state, action) => {
+      state.profilePicture = action.payload;
+    },
     setProfile: (state, action) => {
       state.firstName = action.payload.firstName || "";
       state.lastName = action.payload.lastName || "";
       state.email = action.payload.email || "";
       state.links = action.payload.links || [];
+      state.profilePicture = action.payload.profilePicture || "";
     },
     setOriginalProfile: (state, action) => {
       state.originalProfile.firstName = action.payload.firstName || "";
       state.originalProfile.lastName = action.payload.lastName || "";
       state.originalProfile.email = action.payload.email || "";
       state.originalProfile.links = action.payload.links || [];
+      state.originalProfile.profilePicture =
+        action.payload.profilePicture || "";
     },
     addLink: (state, action) => {
       state.links.push(action.payload);
@@ -58,6 +95,7 @@ export const {
   setLastName,
   setEmail,
   addLink,
+  setProfilePicture,
   removeLink,
   updateLink,
   setProfile,

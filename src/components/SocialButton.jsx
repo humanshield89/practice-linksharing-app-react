@@ -25,7 +25,7 @@ export function SocialButton({ name, href }) {
       target="_blank"
       rel="noreferrer"
       href={href}
-      className={`w-full flex justify-between items-center p-3 hover:scale-105 transform transition-all rounded-xl`}
+      className={`max-w-xs md:max-w-full w-full flex justify-between items-center p-3 hover:scale-105 transform transition-all rounded-xl`}
       style={{
         backgroundColor: social.bgColor,
         color: social.color,

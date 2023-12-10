@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import { SpinnerIcon } from "./svgs/SpinnerIcon";
 import { lazy } from "react";
 import { LoadingScreen } from "./components/LoadingScreen";
+import { Toaster } from "react-hot-toast";
 
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
@@ -29,12 +30,17 @@ function App() {
                 <Route path={"links"} element={<Customize />} />
                 <Route path={"profile"} element={<ProfileDetails />} />
               </Route>
-              <Route path="/p" element={<Preview />} />
+              <Route path="/p/:id" element={<Preview />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </Suspense>
         </AuthInit>
       </Provider>
+      <Toaster
+        toastOptions={{
+          position: "bottom-right",
+        }}
+      />
     </>
   );
 }

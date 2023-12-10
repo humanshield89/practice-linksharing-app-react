@@ -1,18 +1,74 @@
 import { useSelector } from "react-redux";
 import { SocialButton } from "./SocialButton";
+import PropTypes from "prop-types";
 
-export function PhonePreview() {
-  const profile = useSelector((state) => state.profile);
-  return (
-    <div className="w-[308px] h-[632px] relative m-auto text-secondary p-[10px] px-[1.5em] pt-[3.34em] flex flex-col gap-4 items-center ">
+/**
+ * @typedef ProfilePictureProps
+ * @property {import('../redux/slices/ProfileSlice').ProfileState} profile
+ * @property {string} className
+ */
+
+/**
+ * @param {ProfilePictureProps} props
+ * @returns {JSX.Element}
+ */
+export function ProfilePicture({ profile, className }) {
+  if (profile.profilePicture || profile.originalProfile.profilePicture) {
+    return (
       <img
-        className="rounded-full w-24 h-24"
-        src="https://picsum.photos/96/96"
+        className={`rounded-full w-24 h-24 ${className}`}
+        src={profile.profilePicture || profile.originalProfile.profilePicture}
         alt=""
       />
+    );
+  } else if (profile.firstName && profile.lastName) {
+    return (
+      <div
+        className={`rounded-full w-24 h-24 bg-primary flex justify-center items-center text-white text-[2em] ${className}`}
+      >
+        {profile.firstName[0]}
+        {profile.lastName[0]}
+      </div>
+    );
+  } else {
+    return (
+      <div
+        className={`rounded-full w-24 h-24 bg-primary flex justify-center items-center text-white text-[2em] ${className}`}
+      >
+        ?
+      </div>
+    );
+  }
+}
 
-      <div className="bg-neutral h-[1em] w-[10em] rounded-full"></div>
-      <div className="bg-neutral h-[0.5em] w-[4.5em] rounded-full"></div>
+ProfilePicture.propTypes = {
+  profile: PropTypes.object,
+  className: PropTypes.string,
+};
+
+export function PhonePreview() {
+  /**
+   * @type {import('../redux/slices/ProfileSlice').ProfileState}
+   */
+  const profile = useSelector((state) => state.profile);
+
+  return (
+    <div className="w-[308px] h-[632px] relative m-auto text-secondary p-[10px] px-[1.5em] pt-[3.34em] flex flex-col gap-4 items-center ">
+      <ProfilePicture profile={profile} />
+
+      {!profile.lastName && !profile.firstName && (
+        <div className="bg-neutral h-[1em] w-[10em] rounded-full"></div>
+      )}
+      {(profile.lastName || profile.firstName) && (
+        <div className="h-[1em] text-[1.125rem] font-bold">
+          {profile.firstName} {profile.lastName}
+        </div>
+      )}
+      {!profile.email ? (
+        <div className="bg-neutral h-[0.5em] w-[4.5em] rounded-full"></div>
+      ) : (
+        <div className="rounded-full">{profile.email}</div>
+      )}
 
       <div className="bg-neutral h-[2.75em] w-full rounded-xl mt-9 z-10">
         {profile.links?.[0] && (
