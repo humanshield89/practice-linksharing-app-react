@@ -39,5 +39,12 @@
     "prettier": "^3.1.0",
     "tailwindcss": "^3.3.6",
     "vite": "^5.0.6"
-  }
+  },
+  "routes": [
+    {
+      "src": "/[^.]+",
+      "dest": "/",
+      "status": 200
+    }
+  ]
 }
