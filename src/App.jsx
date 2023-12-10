@@ -6,6 +6,7 @@ import { AuthInit } from "./components/AuthInit";
 import { Suspense } from "react";
 import { SpinnerIcon } from "./svgs/SpinnerIcon";
 import { lazy } from "react";
+import { LoadingScreen } from "./components/LoadingScreen";
 
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
@@ -19,13 +20,7 @@ function App() {
     <>
       <Provider store={store}>
         <AuthInit>
-          <Suspense
-            fallback={
-              <div className="min-h-screen min-w-screen flex justify-center items-center">
-                <SpinnerIcon />
-              </div>
-            }
-          >
+          <Suspense fallback={<LoadingScreen />}>
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
