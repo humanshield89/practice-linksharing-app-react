@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { setAuth } from "../redux/slices/AuthSlice";
 import { SpinnerIcon } from "../svgs/SpinnerIcon";
 import { withGuestGuard } from "../hoc/withGuest";
+import { setOriginalProfile, setProfile } from "../redux/slices/ProfileSlice";
 
 /**
  * @typedef {Object} User
@@ -87,6 +88,8 @@ export function SignupWithoutGuard() {
                   session: data.session,
                 }),
               );
+              dispatch(setProfile(data.profile));
+              dispatch(setOriginalProfile(data.profile));
             })
             .catch((err) => {
               alert(err.message);
@@ -203,3 +206,5 @@ export function SignupWithoutGuard() {
 }
 
 export const Signup = withGuestGuard(SignupWithoutGuard);
+
+export default Signup;

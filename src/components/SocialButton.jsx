@@ -1,40 +1,7 @@
 import { ArrowRightIcon } from "../svgs/ArrowRightIcon";
-import { GithubIcon } from "../svgs/socials/GithubIcon";
-import { LinkedInIcon } from "../svgs/socials/LinkedInIcon";
-import { YoutubeIcon } from "../svgs/socials/YoutubeIcon";
+
 import propTypes from "prop-types";
-
-/**
- * @typedef {Object} SocialButtonType
- * @property {string} name
- * @property {JSX.Element} icon
- * @property {string} bgColor
- * @property {string} color
- */
-
-/**
- * @type {Object.<string, SocialButtonType>}
- */
-const socials = {
-  github: {
-    icon: <GithubIcon />,
-    name: "Github",
-    bgColor: "#1A1A1A",
-    color: "#FFFFFF",
-  },
-  youtube: {
-    icon: <YoutubeIcon />,
-    name: "Youtube",
-    bgColor: "#EE3939",
-    color: "#FFFFFF",
-  },
-  linkedin: {
-    icon: <LinkedInIcon />,
-    name: "Linkedin",
-    bgColor: "#2D68FF",
-    color: "#FFFFFF",
-  },
-};
+import { socials } from "./SocialIconsData";
 
 /**
  * @typedef {Object} SocialButtonProps
@@ -46,23 +13,50 @@ const socials = {
  * @param {SocialButtonProps} param0
  * @returns
  */
-export function SocialButton({ name }) {
+export function SocialButton({ name, href }) {
   const social = socials[name];
 
+  if (!social) {
+    throw new Error(`Social ${name} does not exist`);
+  }
+
   return (
-    <button
-      className={`w-full flex justify-between items-center p-4 hover:scale-105 transform transition-all rounded-lg`}
-      style={{ backgroundColor: social.bgColor, color: social.color }}
+    <a
+      target="_blank"
+      rel="noreferrer"
+      href={href}
+      className={`w-full flex justify-between items-center p-3 hover:scale-105 transform transition-all rounded-xl`}
+      style={{
+        backgroundColor: social.bgColor,
+        color: social.color,
+        border: `1px solid ${social.color || "transparent"}`,
+      }}
     >
       <div className="flex gap-2">
         {social.icon}
         <span> {social.name}</span>
       </div>
       <ArrowRightIcon />
-    </button>
+    </a>
   );
 }
 
 SocialButton.propTypes = {
-  name: propTypes.oneOf(["github", "youtube", "linkedin"]),
+  name: propTypes.oneOf([
+    "github",
+    "frontend mentor",
+    "twitter",
+    "linkedin",
+    "youtube",
+    "facebook",
+    "twitch",
+    "dev.to",
+    "codewars",
+    "codepen",
+    "freeCodeCamp",
+    "gitlab",
+    "hashnode",
+    "stackoverflow",
+  ]),
+  href: propTypes.string,
 };

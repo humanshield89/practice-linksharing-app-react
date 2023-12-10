@@ -1,10 +1,53 @@
-import { PhonePreview } from "../../components/PhonePreview";
-import { TopbarButton } from "../../components/TopbarTabs";
-import { EyeIcon } from "../../svgs/EyeIcon";
-import { LinkIcon } from "../../svgs/LinkIcon";
-import { Logo } from "../../svgs/Logo";
-import { ProfileIcon } from "../../svgs/ProfileIcon";
+import { useSelector } from "react-redux";
+import { AddLink } from "../../svgs/AddLink";
+import { useDispatch } from "react-redux";
+import {
+  addLink,
+  removeLink,
+  setOriginalProfile,
+  setProfile,
+  updateLink,
+} from "../../redux/slices/ProfileSlice";
+import { DragIcon } from "../../svgs/DragIcon";
+import { CustomSelect } from "../../components/CustomSelect";
+import { CustomInput } from "../../components/CustomInput";
+import { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import { SpinnerIcon } from "../../svgs/SpinnerIcon";
+
+const options = [
+  "github",
+  "frontend mentor",
+  "twitter",
+  "linkedin",
+  "youtube",
+  "facebook",
+  "twitch",
+  "dev.to",
+  "codewars",
+  "freeCodeCamp",
+  "gitlab",
+  "hashnode",
+  "stackoverflow",
+];
+
 export function Customize() {
+  const dispatch = useDispatch();
+  const profile = useSelector((state) => state.profile);
+  const auth = useSelector((state) => state.auth);
+  const [busy, setBusy] = useState(false);
+
+  const selectedOptions = profile.links.map((link) => link.name);
+
+  const hasChanged =
+    JSON.stringify({
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      email: profile.email,
+      links: profile.links,
+    }) !== JSON.stringify(profile.originalProfile);
+
   return (
     <>
       <h1 className="text-[1.5em] md:text-[2em] font-bold ">
@@ -14,210 +57,182 @@ export function Customize() {
         Add/edit/remove links below and then share all your profiles with the
         world!
       </p>
-      <button className="btn btn-primary btn-outline w-full mt-[2.5em]">
+      <button
+        onClick={() => {
+          dispatch(
+            addLink({
+              // set name to the first non selected option,
+              name: options.find((option) => !selectedOptions.includes(option)),
+              url: "",
+            }),
+          );
+        }}
+        className="btn btn-primary btn-outline w-full mt-[2.5em]"
+      >
         + Add new link
       </button>
-      <div className="bg-base-100 mt-4 flex-grow rounded-md py-[2.5em] flex flex-col justify-center items-center gap-4">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="250"
-          height="161"
-          viewBox="0 0 250 161"
-          fill="none"
-          className="m-auto"
-        >
-          <path
-            opacity="0.3"
-            d="M48.6936 15.4213C23.3786 25.2238 4.59362 50.0679 0.857884 80.1285C-2.26282 105.459 5.19347 133.446 49.0884 141.419C134.494 156.939 222.534 158.754 242.952 116.894C263.369 75.0336 235.427 8.00293 192.079 3.36363C157.683 -0.326546 98.1465 -3.7206 48.6936 15.4213Z"
-            fill="white"
-          />
-          <path
-            d="M157.022 9.56714H93.044C89.0309 9.56714 85.7776 12.8204 85.7776 16.8336V137.744C85.7776 141.757 89.0309 145.01 93.044 145.01H157.022C161.036 145.01 164.289 141.757 164.289 137.744V16.8336C164.289 12.8204 161.036 9.56714 157.022 9.56714Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M125.033 140.872C128.174 140.872 130.72 138.326 130.72 135.185C130.72 132.044 128.174 129.498 125.033 129.498C121.892 129.498 119.346 132.044 119.346 135.185C119.346 138.326 121.892 140.872 125.033 140.872Z"
-            fill="#333333"
-          />
-          <path
-            d="M156.628 21.321H93.4314V126.78H156.628V21.321Z"
-            fill="#EFEBFF"
-          />
-          <path
-            opacity="0.03"
-            d="M117.797 120.508C118.938 120.508 119.862 119.583 119.862 118.443C119.862 117.302 118.938 116.377 117.797 116.377C116.656 116.377 115.732 117.302 115.732 118.443C115.732 119.583 116.656 120.508 117.797 120.508Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.44"
-            d="M125.033 120.508C126.174 120.508 127.099 119.583 127.099 118.443C127.099 117.302 126.174 116.377 125.033 116.377C123.893 116.377 122.968 117.302 122.968 118.443C122.968 119.583 123.893 120.508 125.033 120.508Z"
-            fill="white"
-          />
-          <path
-            opacity="0.03"
-            d="M132.269 120.508C133.41 120.508 134.335 119.583 134.335 118.443C134.335 117.302 133.41 116.377 132.269 116.377C131.129 116.377 130.204 117.302 130.204 118.443C130.204 119.583 131.129 120.508 132.269 120.508Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M148.199 32.9534H101.867V72.5051H148.199V32.9534Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M134.373 80.1285H101.867V83.7504H134.373V80.1285Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M148.199 80.1285H136.567V83.7504H148.199V80.1285Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M117.053 91.2371H101.867V94.8589H117.053V91.2371Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M148.199 91.2371H120.28V94.8589H148.199V91.2371Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M136.954 102.353H101.867V105.975H136.954V102.353Z"
-            fill="#333333"
-          />
-          <path
-            d="M78.6555 21.321H15.4592V126.78H78.6555V21.321Z"
-            fill="#EFEBFF"
-          />
-          <path
-            opacity="0.44"
-            d="M39.8251 120.508C40.9657 120.508 41.8903 119.583 41.8903 118.443C41.8903 117.302 40.9657 116.377 39.8251 116.377C38.6844 116.377 37.7598 117.302 37.7598 118.443C37.7598 119.583 38.6844 120.508 39.8251 120.508Z"
-            fill="white"
-          />
-          <path
-            opacity="0.03"
-            d="M47.0611 120.508C48.2018 120.508 49.1264 119.583 49.1264 118.443C49.1264 117.302 48.2018 116.377 47.0611 116.377C45.9205 116.377 44.9958 117.302 44.9958 118.443C44.9958 119.583 45.9205 120.508 47.0611 120.508Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M54.297 120.508C55.4376 120.508 56.3623 119.583 56.3623 118.443C56.3623 117.302 55.4376 116.377 54.297 116.377C53.1563 116.377 52.2317 117.302 52.2317 118.443C52.2317 119.583 53.1563 120.508 54.297 120.508Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M70.227 32.9534H23.8948V72.5051H70.227V32.9534Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M56.4002 80.1285H23.8948V83.7504H56.4002V80.1285Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M70.2274 80.1285H58.595V83.7504H70.2274V80.1285Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M39.0807 91.2371H23.8948V94.8589H39.0807V91.2371Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M70.2272 91.2371H42.3079V94.8589H70.2272V91.2371Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M58.9819 102.353H23.8948V105.975H58.9819V102.353Z"
-            fill="#333333"
-          />
-          <path d="M234.6 21.321H171.403V126.78H234.6V21.321Z" fill="#EFEBFF" />
-          <path
-            opacity="0.03"
-            d="M195.769 120.508C196.91 120.508 197.834 119.583 197.834 118.443C197.834 117.302 196.91 116.377 195.769 116.377C194.629 116.377 193.704 117.302 193.704 118.443C193.704 119.583 194.629 120.508 195.769 120.508Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M203.005 120.508C204.146 120.508 205.071 119.583 205.071 118.443C205.071 117.302 204.146 116.377 203.005 116.377C201.865 116.377 200.94 117.302 200.94 118.443C200.94 119.583 201.865 120.508 203.005 120.508Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.44"
-            d="M210.242 120.508C211.382 120.508 212.307 119.583 212.307 118.443C212.307 117.302 211.382 116.377 210.242 116.377C209.101 116.377 208.176 117.302 208.176 118.443C208.176 119.583 209.101 120.508 210.242 120.508Z"
-            fill="white"
-          />
-          <path
-            opacity="0.03"
-            d="M226.171 32.9534H179.839V72.5051H226.171V32.9534Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M212.345 80.1285H179.839V83.7504H212.345V80.1285Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M226.171 80.1285H214.539V83.7504H226.171V80.1285Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M195.025 91.2371H179.839V94.8589H195.025V91.2371Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M226.179 91.2371H198.26V94.8589H226.179V91.2371Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.03"
-            d="M214.926 102.353H179.839V105.975H214.926V102.353Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.1"
-            d="M146.597 145.041C146.597 144.281 144.987 113.15 146.02 108.519C147.053 103.887 156.529 81.2447 154.031 78.6023C151.533 75.96 142.383 81.9736 142.383 81.9736C142.383 81.9736 144.054 54.7073 140.105 52.7635C136.157 50.8197 134.403 58.4354 134.403 58.4354L132.3 88.9363L121.882 144.896L146.597 145.041Z"
-            fill="#333333"
-          />
-          <path
-            d="M139.559 113.295C140.887 107.979 142.884 102.793 144.16 97.4252C145.003 93.8717 150.455 79.0199 151.981 74.6463C152.451 73.3024 152.854 71.6775 151.943 70.5841C151.635 70.2644 151.252 70.0272 150.829 69.8946C150.406 69.7619 149.956 69.7379 149.521 69.8248C148.643 70.008 147.833 70.4312 147.182 71.0473C145.663 72.3836 142.862 78.9971 140.811 78.9895C138.329 78.9895 139.498 72.1558 139.43 70.8423C139.149 65.1855 139.566 57.9342 137.357 52.6191C135.717 48.6708 131.647 49.2023 130.69 53.4696C129.733 57.7368 129.771 75.6182 129.771 75.6182C129.771 75.6182 113.887 72.8924 111.176 77.7367C108.465 82.581 113.044 113.355 113.044 113.355L139.559 113.295Z"
-            fill="#F4A28C"
-          />
-          <path
-            d="M141.495 160.5L141.206 111.594L111.525 105.079L99.574 160.5H141.495Z"
-            fill="#633CFF"
-          />
-          <path
-            opacity="0.1"
-            d="M141.495 160.5L141.206 111.594L127.038 108.481L124.502 160.5H141.495Z"
-            fill="#333333"
-          />
-        </svg>
+      <>
+        {profile.links.length === 0 ? (
+          <div className="bg-base-100 mt-4 flex-grow rounded-md py-[2.5em] flex flex-col justify-center items-center gap-4">
+            <AddLink />
+            <h2 className="text-[1.5em] md:text-[2em] font-bold m-auto w-full md:w-[30rem] text-center">
+              Let’s get you started
+            </h2>
+            <p className="text-secondary  w-full md:w-[30rem] m-auto text-center">
+              Use the “Add new link” button to get started. Once you have more
+              than one link, you can reorder and edit them. We’re here to help
+              you share your profiles with everyone!
+            </p>
+          </div>
+        ) : (
+          <div className="flex-grow rounded-md py-[1em] flex flex-col justify-start items-center gap-4 overflow-y-auto">
+            {profile.links.map((link, index) => {
+              return (
+                <div
+                  key={link.name}
+                  className="bg-base-100 p-5 w-full flex flex-col items-stretch gap-3"
+                >
+                  <div className="flex justify-between">
+                    <div className="flex gap-2 text-secondary  items-center">
+                      <DragIcon />
+                      <span className="font-bold">Link #{index + 1}</span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        dispatch(removeLink(index));
+                      }}
+                      className="hover:text-error"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  <div className="flex flex-col gap-2 items-stretch">
+                    <label>Platform</label>
+                    <CustomSelect
+                      selected={link.name}
+                      onSelect={(option) => {
+                        dispatch(
+                          updateLink({
+                            index,
+                            name: option,
+                          }),
+                        );
+                      }}
+                      selectedOptions={profile.links.map((link) => link.name)}
+                      options={options}
+                    />
+                  </div>
 
-        <h2 className="text-[1.5em] md:text-[2em] font-bold m-auto w-full md:w-[30rem] text-center">
-          Let’s get you started
-        </h2>
-        <p className="text-secondary  w-full md:w-[30rem] m-auto text-center">
-          Use the “Add new link” button to get started. Once you have more than
-          one link, you can reorder and edit them. We’re here to help you share
-          your profiles with everyone!
-        </p>
-      </div>
+                  <div className="flex flex-col gap-2">
+                    <label>Link</label>
+                    <CustomInput
+                      error={link.error}
+                      inputProps={{
+                        className: "bg-base-200",
+                        onChange: (e) => {
+                          dispatch(
+                            updateLink({
+                              index,
+                              url: e.target.value,
+                              error: "",
+                            }),
+                          );
+                        },
+                        value: link.url,
+                      }}
+                      type="text"
+                      placeholder="e.g. https://www.github.com/johnappleseed"
+                      icon={
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 14 14"
+                          fill="none"
+                        >
+                          <path
+                            d="M7.52312 10.7207C7.59304 10.7903 7.64852 10.8731 7.68637 10.9643C7.72423 11.0555 7.74371 11.1532 7.74371 11.2519C7.74371 11.3506 7.72423 11.4484 7.68637 11.5395C7.64852 11.6307 7.59304 11.7135 7.52312 11.7832L7.15187 12.1544C6.44838 12.8579 5.49425 13.2531 4.49937 13.2531C3.50449 13.2531 2.55036 12.8579 1.84687 12.1544C1.14338 11.4509 0.748169 10.4968 0.748169 9.5019C0.748169 8.50702 1.14338 7.55289 1.84687 6.8494L3.35437 5.34253C4.0303 4.66493 4.93973 4.27142 5.89639 4.2426C6.85304 4.21378 7.78451 4.55184 8.5 5.18753C8.57386 5.25319 8.63408 5.33276 8.67719 5.42169C8.72031 5.51062 8.74549 5.60717 8.7513 5.70583C8.7571 5.8045 8.74341 5.90333 8.71102 5.99671C8.67863 6.09008 8.62816 6.17616 8.5625 6.25003C8.49683 6.3239 8.41727 6.38411 8.32834 6.42723C8.2394 6.47035 8.14285 6.49552 8.04419 6.50133C7.94553 6.50713 7.84669 6.49345 7.75331 6.46105C7.65994 6.42866 7.57386 6.37819 7.5 6.31253C7.07094 5.93148 6.51252 5.72877 5.93894 5.74584C5.36537 5.76292 4.81999 5.9985 4.41437 6.4044L2.90812 7.9094C2.48609 8.33143 2.249 8.90382 2.249 9.50065C2.249 10.0975 2.48609 10.6699 2.90812 11.0919C3.33015 11.5139 3.90254 11.751 4.49937 11.751C5.0962 11.751 5.66859 11.5139 6.09062 11.0919L6.46187 10.7207C6.53153 10.6509 6.61424 10.5956 6.70529 10.5579C6.79634 10.5201 6.89393 10.5007 6.9925 10.5007C7.09106 10.5007 7.18865 10.5201 7.2797 10.5579C7.37075 10.5956 7.45346 10.6509 7.52312 10.7207ZM12.1531 1.84565C11.4491 1.14325 10.4951 0.748779 9.50062 0.748779C8.5061 0.748779 7.55218 1.14325 6.84812 1.84565L6.47687 2.2169C6.33597 2.3578 6.25682 2.54889 6.25682 2.74815C6.25682 2.94741 6.33597 3.13851 6.47687 3.2794C6.61777 3.4203 6.80886 3.49945 7.00812 3.49945C7.20738 3.49945 7.39847 3.4203 7.53937 3.2794L7.91062 2.90815C8.33265 2.48613 8.90504 2.24903 9.50187 2.24903C10.0987 2.24903 10.6711 2.48613 11.0931 2.90815C11.5151 3.33018 11.7522 3.90257 11.7522 4.4994C11.7522 5.09624 11.5151 5.66863 11.0931 6.09065L9.58625 7.59815C9.18027 8.00388 8.63459 8.23912 8.06087 8.25574C7.48715 8.27235 6.92877 8.06908 6.5 7.68753C6.42613 7.62187 6.34005 7.5714 6.24668 7.539C6.1533 7.50661 6.05446 7.49292 5.9558 7.49873C5.85714 7.50453 5.76059 7.52971 5.67165 7.57283C5.58272 7.61595 5.50316 7.67616 5.4375 7.75003C5.37183 7.8239 5.32137 7.90997 5.28897 8.00335C5.25658 8.09672 5.24289 8.19556 5.24869 8.29422C5.2545 8.39288 5.27968 8.48944 5.3228 8.57837C5.36591 8.6673 5.42613 8.74687 5.5 8.81253C6.21498 9.44807 7.14583 9.78634 8.10203 9.75811C9.05824 9.72987 9.9675 9.33727 10.6437 8.66065L12.1512 7.15378C12.8545 6.44989 13.2496 5.49571 13.25 4.50073C13.2503 3.50575 12.8558 2.55129 12.1531 1.8469V1.84565Z"
+                            fill="#737373"
+                          />
+                        </svg>
+                      }
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </>
       <div className="flex justify-end py-2 border-t border-neutral mt-4">
-        <button disabled className="btn btn-primary btn-outline">
-          Save
+        <button
+          onClick={async () => {
+            // check that all links have a url
+            let hasError = false;
+            profile.links.forEach((link, index) => {
+              if (!link.url) {
+                dispatch(
+                  updateLink({
+                    index,
+                    error: "Link Required",
+                  }),
+                );
+                toast.error(`Link #${index + 1} is missing a url`);
+                hasError = true;
+              }
+
+              // check that it is a valid url
+              if (link.url && !link.url.includes("http")) {
+                // add https
+                dispatch(
+                  updateLink({
+                    index,
+                    url: `https://${link.url}`,
+                  }),
+                );
+                hasError = true;
+              }
+            });
+            if (hasError) return;
+            setBusy(true);
+            try {
+              const res = await fetch(
+                import.meta.env.VITE_BACKEND_URL + "/api/users/profile",
+                {
+                  method: "PATCH",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "session-token": auth.session.token,
+                  },
+                  body: JSON.stringify({
+                    links: profile.links,
+                  }),
+                },
+              );
+              const data = await res.json();
+
+              if (res.ok) {
+                dispatch(setProfile(data.profile));
+                dispatch(setOriginalProfile(data.profile));
+                toast.success("Profile Updated");
+              } else {
+                throw new Error(data?.message || "Something Went Wrong");
+              }
+            } catch (e) {
+              toast.error(e.message);
+            } finally {
+              setBusy(false);
+            }
+          }}
+          disabled={!hasChanged || busy}
+          className="btn btn-primary btn-outline"
+        >
+          {busy ? <SpinnerIcon /> : "Save"}
         </button>
       </div>
+      <Toaster position="bottom-right" reverseOrder={false} />
     </>
   );
 }
+
+export default Customize;

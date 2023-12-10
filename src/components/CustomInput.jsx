@@ -29,10 +29,17 @@ export const CustomInput = ({
       <div className="relative">
         {icon && <div className="absolute left-2 top-4">{icon}</div>}
         <input
-          className="input input-bordered w-full pl-10"
           type={type || "text"}
           placeholder={placeholder}
-          {...inputProps}
+          {
+            // TODO: THis looks weird and feels wrong
+            // This component can be improved for better reusability and customization
+            ...{
+              ...inputProps,
+              className:
+                "input input-bordered w-full pl-10 " + inputProps.className,
+            }
+          }
         />
         {error && (
           <div className="absolute right-2 top-4 text-xs text-error">

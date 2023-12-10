@@ -1,6 +1,10 @@
+import { useSelector } from "react-redux";
+import { SocialButton } from "./SocialButton";
+
 export function PhonePreview() {
+  const profile = useSelector((state) => state.profile);
   return (
-    <div className="w-[308px] h-[632px] relative m-auto text-secondary p-[10px] px-[1.5em] pt-[3.34em] flex flex-col gap-4 items-center">
+    <div className="w-[308px] h-[632px] relative m-auto text-secondary p-[10px] px-[1.5em] pt-[3.34em] flex flex-col gap-4 items-center ">
       <img
         className="rounded-full w-24 h-24"
         src="https://picsum.photos/96/96"
@@ -10,11 +14,47 @@ export function PhonePreview() {
       <div className="bg-neutral h-[1em] w-[10em] rounded-full"></div>
       <div className="bg-neutral h-[0.5em] w-[4.5em] rounded-full"></div>
 
-      <div className="bg-neutral h-[2.75em] w-full rounded-xl mt-9"></div>
-      <div className="bg-neutral h-[2.75em] w-full rounded-xl"></div>
-      <div className="bg-neutral h-[2.75em] w-full rounded-xl"></div>
-      <div className="bg-neutral h-[2.75em] w-full rounded-xl"></div>
-      <div className="bg-neutral h-[2.75em] w-full rounded-xl"></div>
+      <div className="bg-neutral h-[2.75em] w-full rounded-xl mt-9 z-10">
+        {profile.links?.[0] && (
+          <SocialButton
+            name={profile.links?.[0].name}
+            href={profile.links?.[0].url}
+          />
+        )}
+      </div>
+
+      <div className="bg-neutral h-[2.75em] w-full rounded-xl z-10">
+        {profile.links?.[1] && (
+          <SocialButton
+            name={profile.links?.[1].name}
+            href={profile.links?.[1].url}
+          />
+        )}
+      </div>
+      <div className="bg-neutral h-[2.75em] w-full rounded-xl z-10">
+        {profile.links?.[2] && (
+          <SocialButton
+            name={profile.links?.[2].name}
+            href={profile.links?.[2].url}
+          />
+        )}
+      </div>
+      <div className="bg-neutral h-[2.75em] w-full rounded-xl z-10">
+        {profile.links?.[3] && (
+          <SocialButton
+            name={profile.links?.[3].name}
+            href={profile.links?.[3].url}
+          />
+        )}
+      </div>
+      <div className="bg-neutral h-[2.75em] w-full rounded-xl z-10">
+        {profile.links?.[4] && (
+          <SocialButton
+            name={profile.links?.[4].name}
+            href={profile.links?.[4].url}
+          />
+        )}
+      </div>
 
       <svg
         xmlns="http://www.w3.org/2000/svg"

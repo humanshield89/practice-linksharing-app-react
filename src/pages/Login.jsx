@@ -3,13 +3,12 @@ import { Envelope } from "../svgs/Envelope";
 import { PadLock } from "../svgs/PadLock";
 import { CustomInput } from "../components/CustomInput";
 import { AuthLayout } from "../layouts/AuthLayout";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { SpinnerIcon } from "../svgs/SpinnerIcon";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../redux/slices/AuthSlice";
 import { withGuestGuard } from "../hoc/withGuest";
+import { setOriginalProfile, setProfile } from "../redux/slices/ProfileSlice";
 
 async function login(email, password) {
   const res = await fetch(
@@ -33,7 +32,6 @@ async function login(email, password) {
 }
 
 function LoginWithoutGuard() {
-  const auth = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
@@ -66,6 +64,9 @@ function LoginWithoutGuard() {
                     session: data.session,
                   }),
                 );
+                // set the profile store
+                dispatch(setProfile(data.profile));
+                dispatch(setOriginalProfile(data.profile));
               });
           }}
           className="flex flex-col gap-6"
@@ -126,3 +127,5 @@ function LoginWithoutGuard() {
 }
 
 export const Login = withGuestGuard(LoginWithoutGuard);
+
+export default Login;

@@ -8,6 +8,7 @@ import {
 } from "../redux/slices/AuthSlice";
 import { useSelector } from "react-redux";
 import { SpinnerIcon } from "../svgs/SpinnerIcon";
+import { setOriginalProfile, setProfile } from "../redux/slices/ProfileSlice";
 
 export function AuthInit({ children }) {
   const auth = useSelector((store) => store.auth);
@@ -31,6 +32,8 @@ export function AuthInit({ children }) {
                 session: authData.session,
               }),
             );
+            dispatch(setProfile(data.profile));
+            dispatch(setOriginalProfile(data.profile));
           });
         } else {
           dispatch(setAuthLoaded(true));
@@ -41,7 +44,22 @@ export function AuthInit({ children }) {
     }
   }, [dispatch]);
 
-  return <>{auth.isLoaded ? children : <SpinnerIcon />}</>;
+  return (
+    <>
+      {auth.isLoaded ? (
+        children
+      ) : (
+        <div className="flex min-w-full min-h-screen">
+          <div className="m-auto flex flex-col items-center gap-4 animate-bounce">
+            <span className="text-lg  text-primary ">
+              Something amazing is loading...
+            </span>
+            <SpinnerIcon className="w-8 h-8 text-primary" />
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
 
 AuthInit.propTypes = {

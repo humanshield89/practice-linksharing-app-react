@@ -57,13 +57,19 @@ const Header = () => {
 
 const EditLayout = () => {
   return (
-    <div className="min-h-screen gap-6 flex flex-col p-1 md:p-4 w-full">
+    <div className="max-h-screen min-h-screen gap-6 flex flex-col p-1 md:p-4 w-full">
       <Header />
-      <main className="flex flex-grow gap-6">
+      <main className="flex flex-grow gap-6 ">
         <div className="bg-base-200 rounded-lg shadow-sm hidden lg:flex basis-1/3">
           <PhonePreview />
         </div>
-        <div className="bg-base-200 rounded-lg shadow-sm flex flex-col md:basis-2/3 p-[1.5em] md:p-[2.5em]">
+        <div
+          style={{
+            // probably not the best way to do this but it works
+            maxHeight: "calc(100vh - 1.5rem - 4rem - 80px)",
+          }}
+          className="bg-base-200 rounded-lg shadow-sm flex flex-col basis-full lg:basis-2/3 p-[1.5em] md:p-[2.5em]"
+        >
           <Outlet />
         </div>
       </main>
